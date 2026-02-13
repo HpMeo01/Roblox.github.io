@@ -2,42 +2,77 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meo Hub</title>
+<title>Roblox Client And Script</title>
 
 <script>
-// ======= CHỈ SỬA Ở ĐÂY =======
+// ======================
+// DISCORD
+// ======================
+const DISCORD_LINK = "https://discord.gg/yourserver";
 
+// ======================
 // CLIENT
-const DELTA_TEXT = "Delta Vng V2";
-const DELTA_LINK = "https://link-delta.com";
+// ======================
+const CLIENTS = [
+  { name: "Delta Vng V2", link: "https://link-delta-vng.com" },
+  { name: "Delta QT", link: "https://link-delta-qt.com" },
+  { name: "Codex Vng V1", link: "https://link-codex-vng.com" },
+  { name: "Codex QT", link: "https://link-codex-qt.com" }
+];
 
-const CODEX_TEXT = "Codex Vng V1";
-const CODEX_LINK = "https://link-codex.com";
+// ======================
+// SCRIPT (THÊM DỄ)
+// ======================
+const SCRIPTS = [
+  {
+    title: "Check Online",
+    code: `loadstring(game:HttpGet("https://raw.githubusercontent.com/bduy2222/FynixRejoin/refs/heads/main/checkonline.lua"))()`
+  }
+];
 
-// SCRIPT 1
-const SCRIPT1_TITLE = "Check Online";
-const SCRIPT1_CODE = `loadstring(game:HttpGet("https://raw.githubusercontent.com/bduy2222/FynixRejoin/refs/heads/main/checkonline.lua"))()`;
-
-// SCRIPT 2
-const SCRIPT2_TITLE = "Example Script";
-const SCRIPT2_CODE = `print("Hello Meo Hub")`;
-
-// =============================
+// ======================
+// NHẠC
+// ======================
+const MUSIC_LINK = "music.mp3";
 </script>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#0f0f0f;
   color:white;
   text-align:center;
+  overflow-x:hidden;
+  background:#0f0f0f;
 }
 
-h1{
-  margin-top:25px;
-  font-size:32px;
-  text-shadow:0 0 10px cyan;
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+/* Header */
+.header{
+  padding:20px;
+  font-size:26px;
+  font-weight:bold;
+  color:#00f7ff;
+  text-shadow:0 0 15px #00f7ff;
+}
+
+.discord-btn{
+  position:absolute;
+  top:15px;
+  right:20px;
+  background:#5865F2;
+  border:none;
+  padding:8px 14px;
+  border-radius:8px;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .menu{
@@ -48,56 +83,53 @@ h1{
 }
 
 .menu button{
-  padding:15px 30px;
-  font-size:18px;
+  background:linear-gradient(45deg,#ff4d4d,#ff9900);
+  padding:14px 30px;
   border:none;
-  border-radius:12px;
-  background:cyan;
+  border-radius:25px;
+  font-size:18px;
   font-weight:bold;
+  color:white;
   cursor:pointer;
-  transition:0.3s;
-}
-
-.menu button:hover{
-  background:#00aaaa;
-  transform:scale(1.05);
 }
 
 .section{
   display:none;
-  margin-top:40px;
+  margin-top:35px;
 }
 
 .box{
-  background:#1c1c1c;
+  background:rgba(0,0,0,0.7);
   margin:20px auto;
-  padding:20px;
-  max-width:500px;
-  border-radius:15px;
-  box-shadow:0 0 15px rgba(0,255,255,0.3);
+  padding:25px;
+  max-width:520px;
+  border-radius:20px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 25px rgba(0,255,255,0.4);
   position:relative;
 }
 
 .box button{
-  margin-top:10px;
-  padding:8px 20px;
+  margin-top:15px;
+  padding:10px 20px;
   border:none;
   border-radius:8px;
-  background:lime;
   font-weight:bold;
   cursor:pointer;
-  transition:0.3s;
-}
-
-.box button:hover{
-  background:#55aa00;
+  background:#00eaff;
+  color:black;
 }
 
 .copy-btn{
   position:absolute;
   top:15px;
   right:15px;
-  background:orange;
+  background:#ffd500;
+  border:none;
+  padding:6px 12px;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 pre{
@@ -106,13 +138,81 @@ pre{
   padding:15px;
   margin-top:40px;
   border-radius:10px;
-  max-height:200px;
+  max-height:220px;
   overflow:auto;
   white-space:pre;
 }
+
+.music-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#00eaff;
+  border:none;
+  padding:10px 15px;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+}
 </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="header">Roblox Client And Script</div>
+<button class="discord-btn" onclick="window.open(DISCORD_LINK)">Join Discord</button>
+
+<div class="menu">
+  <button onclick="showClient()">Client</button>
+  <button onclick="showScript()">Script</button>
+</div>
+
+<div id="client" class="section"></div>
+<div id="script" class="section"></div>
+
+<audio id="bgMusic" loop>
+  <source src="" type="audio/mpeg">
+</audio>
+<button class="music-btn" onclick="toggleMusic()">🔊 Music</button>
 
 <script>
+// ===== PARTICLE EFFECT =====
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for(let i=0;i<100;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    size:Math.random()*3,
+    speedX:(Math.random()-0.5),
+    speedY:(Math.random()-0.5)
+  });
+}
+
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#00f7ff";
+  particles.forEach(p=>{
+    p.x+=p.speedX;
+    p.y+=p.speedY;
+
+    if(p.x<0||p.x>canvas.width) p.speedX*=-1;
+    if(p.y<0||p.y>canvas.height) p.speedY*=-1;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== CLIENT & SCRIPT RENDER =====
 function showClient(){
   document.getElementById("client").style.display="block";
   document.getElementById("script").style.display="none";
@@ -123,69 +223,47 @@ function showScript(){
   document.getElementById("script").style.display="block";
 }
 
-function copyText(id,btn){
-  const text=document.getElementById(id).innerText;
+function copyText(text,btn){
   navigator.clipboard.writeText(text);
   btn.innerText="Copied ✓";
-  btn.style.background="lime";
-  setTimeout(()=>{
-    btn.innerText="Copy";
-    btn.style.background="orange";
-  },1500);
+  setTimeout(()=>{btn.innerText="Copy"},1500);
 }
 
-window.onload=function(){
-  document.getElementById("s1title").innerText=SCRIPT1_TITLE;
-  document.getElementById("s1code").innerText=SCRIPT1_CODE;
-  document.getElementById("s2title").innerText=SCRIPT2_TITLE;
-  document.getElementById("s2code").innerText=SCRIPT2_CODE;
+CLIENTS.forEach(c=>{
+  document.getElementById("client").innerHTML += `
+    <div class="box">
+      <h3>${c.name}</h3>
+      <button onclick="window.open('${c.link}')">Open</button>
+    </div>
+  `;
+});
 
-  document.getElementById("deltaText").innerText=DELTA_TEXT;
-  document.getElementById("codexText").innerText=CODEX_TEXT;
+SCRIPTS.forEach(s=>{
+  document.getElementById("script").innerHTML += `
+    <div class="box">
+      <h3>${s.title}</h3>
+      <button class="copy-btn" onclick="copyText(\`${s.code}\`, this)">Copy</button>
+      <pre>${s.code}</pre>
+    </div>
+  `;
+});
+
+// ===== MUSIC =====
+const music = document.getElementById("bgMusic");
+music.src = MUSIC_LINK;
+
+function toggleMusic(){
+  if(music.paused){
+    music.play();
+    document.querySelector(".music-btn").innerText="🔊 Music On";
+  } else {
+    music.pause();
+    document.querySelector(".music-btn").innerText="🔇 Music Off";
+  }
 }
+
+showClient();
 </script>
-
-</head>
-<body>
-
-<h1>🔥 Meo Hub 🔥</h1>
-
-<div class="menu">
-  <button onclick="showClient()">Client</button>
-  <button onclick="showScript()">Script</button>
-</div>
-
-<!-- CLIENT -->
-<div id="client" class="section">
-
-  <div class="box">
-    <h3 id="deltaText"></h3>
-    <button onclick="window.location.href=DELTA_LINK">Download</button>
-  </div>
-
-  <div class="box">
-    <h3 id="codexText"></h3>
-    <button onclick="window.location.href=CODEX_LINK">Download</button>
-  </div>
-
-</div>
-
-<!-- SCRIPT -->
-<div id="script" class="section">
-
-  <div class="box">
-    <h3 id="s1title"></h3>
-    <button class="copy-btn" onclick="copyText('s1code',this)">Copy</button>
-    <pre id="s1code"></pre>
-  </div>
-
-  <div class="box">
-    <h3 id="s2title"></h3>
-    <button class="copy-btn" onclick="copyText('s2code',this)">Copy</button>
-    <pre id="s2code"></pre>
-  </div>
-
-</div>
 
 </body>
 </html>
