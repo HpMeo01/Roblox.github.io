@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script>
-    // ====== 🔥 THAY LINK Ở ĐÂY 🔥 ======
-    const DELTA_LINK = "https://link4m.com/wzTfmT";
-    const CODEX_LINK = "https://link4m.com/K7rK91yg";
+    // ===== THAY LINK Ở ĐÂY =====
+    const DELTA_LINK = "https://link-delta.com";
+    const CODEX_LINK = "https://link-codex.com";
     const ARCEUS_LINK = "https://link-arceus.com";
     const KAITUN_LINK = "https://link-script.com";
-    // ====================================
   </script>
 
   <style>
     body {
-      background-color: #0f0f0f;
+      background: #0f0f0f;
       color: white;
       font-family: Arial;
       text-align: center;
@@ -24,47 +23,78 @@
     }
 
     h1 {
-      margin-top: 30px;
-      font-size: 32px;
+      margin-top: 20px;
     }
 
-    .category {
+    .menu {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .menu button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: cyan;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .menu button:hover {
+      background: #00aaaa;
+    }
+
+    .section {
+      display: none;
       margin-top: 40px;
     }
 
     .box {
-      background-color: #1c1c1c;
-      padding: 20px;
+      background: #1c1c1c;
       margin: 15px auto;
-      width: 90%;
+      padding: 15px;
       max-width: 400px;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,255,255,0.3);
     }
 
-    button {
+    .box button {
       margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 8px 20px;
       border: none;
       border-radius: 8px;
-      background-color: cyan;
-      cursor: pointer;
+      background: lime;
       font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #00aaaa;
+      cursor: pointer;
     }
   </style>
+
+  <script>
+    function showClient() {
+      document.getElementById("client").style.display = "block";
+      document.getElementById("script").style.display = "none";
+    }
+
+    function showScript() {
+      document.getElementById("client").style.display = "none";
+      document.getElementById("script").style.display = "block";
+    }
+  </script>
+
 </head>
 <body>
 
-<h1>🔥 Meo Download Hub 🔥</h1>
+<h1>🔥 Meo Hub 🔥</h1>
 
-<div class="category">
-  <h2>Client</h2>
+<div class="menu">
+  <button onclick="showClient()">Client</button>
+  <button onclick="showScript()">Script</button>
+</div>
 
+<!-- CLIENT SECTION -->
+<div id="client" class="section">
   <div class="box">
     <h3>Delta Vng</h3>
     <button onclick="window.location.href=DELTA_LINK">Download</button>
@@ -79,18 +109,15 @@
     <h3>Arceus</h3>
     <button onclick="window.location.href=ARCEUS_LINK">Download</button>
   </div>
-
 </div>
 
-<div class="category">
-  <h2>Script</h2>
-
+<!-- SCRIPT SECTION -->
+<div id="script" class="section">
   <div class="box">
     <h3>Kaitun 3TN</h3>
     <button onclick="window.location.href=KAITUN_LINK">Get Script</button>
   </div>
-
 </div>
 
 </body>
-  </html>
+</html>
