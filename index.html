@@ -1,269 +1,198 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roblox Client And Script</title>
 
-<script>
-// ======================
-// DISCORD
-// ======================
-const DISCORD_LINK = "https://discord.gg/yourserver";
-
-// ======================
-// CLIENT
-// ======================
-const CLIENTS = [
-  { name: "Delta Vng V2", link: "https://link-delta-vng.com" },
-  { name: "Delta QT", link: "https://link-delta-qt.com" },
-  { name: "Codex Vng V1", link: "https://link-codex-vng.com" },
-  { name: "Codex QT", link: "https://link-codex-qt.com" }
-];
-
-// ======================
-// SCRIPT (THÊM DỄ)
-// ======================
-const SCRIPTS = [
-  {
-    title: "Check Online",
-    code: `loadstring(game:HttpGet("https://raw.githubusercontent.com/bduy2222/FynixRejoin/refs/heads/main/checkonline.lua"))()`
-  }
-];
-
-// ======================
-// NHẠC
-// ======================
-const MUSIC_LINK = "music.mp3";
-</script>
-
 <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  color:white;
-  text-align:center;
-  overflow-x:hidden;
-  background:#0f0f0f;
+    background:#0f0f1a;
+    color:white;
+    text-align:center;
 }
 
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-1;
+/* Discord bar */
+.discord-bar{
+    background:linear-gradient(90deg,#5865F2,#8f5cff);
+    padding:12px;
 }
 
-/* Header */
-.header{
-  padding:20px;
-  font-size:26px;
-  font-weight:bold;
-  color:#00f7ff;
-  text-shadow:0 0 15px #00f7ff;
+.discord-bar a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
 }
 
-.discord-btn{
-  position:absolute;
-  top:15px;
-  right:20px;
-  background:#5865F2;
-  border:none;
-  padding:8px 14px;
-  border-radius:8px;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
+/* Client links */
+.top-links{
+    margin-top:10px;
 }
 
-.menu{
-  margin-top:30px;
-  display:flex;
-  justify-content:center;
-  gap:20px;
+.top-links a{
+    display:inline-block;
+    margin:5px;
+    padding:8px 15px;
+    border-radius:10px;
+    background:linear-gradient(45deg,#00f5ff,#ff00c8);
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+    transition:0.3s;
 }
 
-.menu button{
-  background:linear-gradient(45deg,#ff4d4d,#ff9900);
-  padding:14px 30px;
-  border:none;
-  border-radius:25px;
-  font-size:18px;
-  font-weight:bold;
-  color:white;
-  cursor:pointer;
+.top-links a:hover{
+    transform:scale(1.1);
 }
 
-.section{
-  display:none;
-  margin-top:35px;
+/* Title */
+h1{
+    margin-top:25px;
+    font-size:32px;
+    background:linear-gradient(90deg,#00f5ff,#ff00c8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.box{
-  background:rgba(0,0,0,0.7);
-  margin:20px auto;
-  padding:25px;
-  max-width:520px;
-  border-radius:20px;
-  backdrop-filter:blur(10px);
-  box-shadow:0 0 25px rgba(0,255,255,0.4);
-  position:relative;
+/* Credit */
+.credit{
+    font-size:16px;
+    font-weight:bold;
+    margin-top:5px;
+    background:linear-gradient(90deg,
+        red,orange,yellow,green,cyan,blue,violet,red);
+    background-size:300%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:rainbow 6s linear infinite;
 }
 
-.box button{
-  margin-top:15px;
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-  background:#00eaff;
-  color:black;
+@keyframes rainbow{
+    0%{background-position:0%}
+    100%{background-position:300%}
+}
+
+/* Script box */
+.script-box{
+    background:#111;
+    width:80%;
+    max-width:700px;
+    margin:30px auto;
+    padding:15px;
+    border-radius:15px;
+    text-align:left;
+    max-height:200px;
+    overflow:auto;
+    box-shadow:0 0 15px rgba(0,255,255,0.3);
 }
 
 .copy-btn{
-  position:absolute;
-  top:15px;
-  right:15px;
-  background:#ffd500;
-  border:none;
-  padding:6px 12px;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
+    padding:8px 18px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(45deg,#00f5ff,#ff00c8);
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-pre{
-  background:black;
-  color:#00ff00;
-  padding:15px;
-  margin-top:40px;
-  border-radius:10px;
-  max-height:220px;
-  overflow:auto;
-  white-space:pre;
-}
-
+/* Music button */
 .music-btn{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#00eaff;
-  border:none;
-  padding:10px 15px;
-  border-radius:12px;
-  font-weight:bold;
-  cursor:pointer;
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    padding:10px 15px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(45deg,#00f5ff,#ff00c8);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
 }
 </style>
 </head>
+
 <body>
 
-<canvas id="particles"></canvas>
-
-<div class="header">Roblox Client And Script</div>
-<button class="discord-btn" onclick="window.open(DISCORD_LINK)">Join Discord</button>
-
-<div class="menu">
-  <button onclick="showClient()">Client</button>
-  <button onclick="showScript()">Script</button>
+<!-- Discord -->
+<div class="discord-bar">
+    <a href="YOUR_DISCORD_LINK" target="_blank">
+        🔥 Join My Discord Server 🔥
+    </a>
 </div>
 
-<div id="client" class="section"></div>
-<div id="script" class="section"></div>
+<!-- Client Links -->
+<div class="top-links">
+    <a href="LINK_DELTA_QT" target="_blank">Delta QT</a>
+    <a href="LINK_CODEX_QT" target="_blank">Codex QT</a>
+    <a href="LINK_DELTA_VNG" target="_blank">Delta VNG</a>
+    <a href="LINK_CODEX_VNG" target="_blank">Codex VNG</a>
+</div>
 
+<h1>Roblox Client And Script</h1>
+<p class="credit">Made By Htymxyz</p>
+
+<!-- Script -->
+<div class="script-box" id="script1">
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bduy2222/FynixRejoin/refs/heads/main/checkonline.lua"))()
+</div>
+
+<button class="copy-btn" onclick="copyScript()">Copy Script</button>
+
+<!-- Audio -->
 <audio id="bgMusic" loop>
-  <source src="" type="audio/mpeg">
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
+
 <button class="music-btn" onclick="toggleMusic()">🔊 Music</button>
 
 <script>
-// ===== PARTICLE EFFECT =====
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-for(let i=0;i<100;i++){
-  particles.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    size:Math.random()*3,
-    speedX:(Math.random()-0.5),
-    speedY:(Math.random()-0.5)
-  });
+function copyScript(){
+    const text=document.getElementById("script1").innerText;
+    navigator.clipboard.writeText(text);
+    alert("Copied!");
 }
 
-function animateParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="#00f7ff";
-  particles.forEach(p=>{
-    p.x+=p.speedX;
-    p.y+=p.speedY;
-
-    if(p.x<0||p.x>canvas.width) p.speedX*=-1;
-    if(p.y<0||p.y>canvas.height) p.speedY*=-1;
-
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-    ctx.fill();
-  });
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-// ===== CLIENT & SCRIPT RENDER =====
-function showClient(){
-  document.getElementById("client").style.display="block";
-  document.getElementById("script").style.display="none";
-}
-
-function showScript(){
-  document.getElementById("client").style.display="none";
-  document.getElementById("script").style.display="block";
-}
-
-function copyText(text,btn){
-  navigator.clipboard.writeText(text);
-  btn.innerText="Copied ✓";
-  setTimeout(()=>{btn.innerText="Copy"},1500);
-}
-
-CLIENTS.forEach(c=>{
-  document.getElementById("client").innerHTML += `
-    <div class="box">
-      <h3>${c.name}</h3>
-      <button onclick="window.open('${c.link}')">Open</button>
-    </div>
-  `;
-});
-
-SCRIPTS.forEach(s=>{
-  document.getElementById("script").innerHTML += `
-    <div class="box">
-      <h3>${s.title}</h3>
-      <button class="copy-btn" onclick="copyText(\`${s.code}\`, this)">Copy</button>
-      <pre>${s.code}</pre>
-    </div>
-  `;
-});
-
-// ===== MUSIC =====
-const music = document.getElementById("bgMusic");
-music.src = MUSIC_LINK;
+const music=document.getElementById("bgMusic");
 
 function toggleMusic(){
-  if(music.paused){
-    music.play();
-    document.querySelector(".music-btn").innerText="🔊 Music On";
-  } else {
-    music.pause();
-    document.querySelector(".music-btn").innerText="🔇 Music Off";
-  }
+    if(music.paused){
+        music.play();
+    }else{
+        music.pause();
+    }
 }
-
-showClient();
 </script>
+
+<!-- Particle -->
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+<script>
+tsParticles.load("particles-js",{
+    particles:{
+        number:{value:80},
+        color:{value:["#00f5ff","#ff00c8","#7a00ff"]},
+        shape:{type:"circle"},
+        opacity:{value:0.6},
+        size:{value:3},
+        move:{enable:true,speed:1.5},
+        links:{
+            enable:true,
+            distance:150,
+            color:"#ffffff",
+            opacity:0.2
+        }
+    }
+});
+</script>
+
+<div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
 
 </body>
 </html>
