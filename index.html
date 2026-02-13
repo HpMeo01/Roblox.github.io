@@ -5,14 +5,8 @@
 <title>Roblox Client And Script</title>
 
 <script>
-// ======================
-// DISCORD
-// ======================
 const DISCORD_LINK = "https://discord.gg/yourserver";
 
-// ======================
-// CLIENT
-// ======================
 const CLIENTS = [
   { name: "Delta Vng V2", link: "https://link-delta-vng.com" },
   { name: "Delta QT", link: "https://link-delta-qt.com" },
@@ -20,9 +14,6 @@ const CLIENTS = [
   { name: "Codex QT", link: "https://link-codex-qt.com" }
 ];
 
-// ======================
-// SCRIPT
-// ======================
 const SCRIPTS = [
   {
     title: "Check Online",
@@ -30,9 +21,6 @@ const SCRIPTS = [
   }
 ];
 
-// ======================
-// MUSIC
-// ======================
 const MUSIC_LINK = "music.mp3";
 </script>
 
@@ -53,7 +41,7 @@ canvas{
   z-index:-1;
 }
 
-/* Header */
+/* HEADER */
 .header{
   padding:20px;
   font-size:26px;
@@ -99,10 +87,10 @@ canvas{
 
 .menu button{
   background:linear-gradient(45deg,#ff4d4d,#ff9900);
-  padding:14px 30px;
+  padding:12px 25px;
   border:none;
   border-radius:25px;
-  font-size:18px;
+  font-size:16px;
   font-weight:bold;
   color:white;
   cursor:pointer;
@@ -110,52 +98,60 @@ canvas{
 
 .section{
   display:none;
-  margin-top:35px;
+  margin-top:30px;
 }
 
+/* SMALLER BOX */
 .box{
   background:rgba(0,0,0,0.7);
-  margin:20px auto;
-  padding:25px;
-  max-width:520px;
-  border-radius:20px;
+  margin:15px auto;
+  padding:15px;
+  max-width:380px;
+  border-radius:15px;
   backdrop-filter:blur(10px);
-  box-shadow:0 0 25px rgba(0,255,255,0.4);
+  box-shadow:0 0 15px rgba(0,255,255,0.4);
   position:relative;
 }
 
+.box h3{
+  font-size:18px;
+}
+
 .box button{
-  margin-top:15px;
-  padding:10px 20px;
+  margin-top:10px;
+  padding:6px 14px;
   border:none;
-  border-radius:8px;
+  border-radius:6px;
   font-weight:bold;
   cursor:pointer;
   background:#00eaff;
   color:black;
+  font-size:14px;
 }
 
 .copy-btn{
   position:absolute;
-  top:15px;
-  right:15px;
+  top:10px;
+  right:10px;
   background:#ffd500;
   border:none;
-  padding:6px 12px;
+  padding:5px 10px;
   border-radius:6px;
   font-weight:bold;
   cursor:pointer;
+  font-size:12px;
 }
 
 pre{
   background:black;
   color:#00ff00;
-  padding:15px;
-  margin-top:40px;
+  padding:12px;
+  margin-top:35px;
   border-radius:10px;
-  max-height:220px;
+  max-height:200px;
   overflow:auto;
   white-space:pre;
+  font-size:13px;
 }
 
 .music-btn{
@@ -164,8 +160,8 @@ pre{
   right:20px;
   background:#00eaff;
   border:none;
-  padding:10px 15px;
-  border-radius:12px;
+  padding:8px 12px;
+  border-radius:10px;
   font-weight:bold;
   cursor:pointer;
 }
@@ -190,30 +186,28 @@ pre{
 <div id="client" class="section"></div>
 <div id="script" class="section"></div>
 
-<audio id="bgMusic" loop>
-  <source src="" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" loop></audio>
 <button class="music-btn" onclick="toggleMusic()">🔊 Music</button>
 
 <script>
-// ===== PARTICLE =====
+// PARTICLES
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let particles = [];
-for(let i=0;i<100;i++){
+let particles=[];
+for(let i=0;i<80;i++){
   particles.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    size:Math.random()*3,
+    size:Math.random()*2,
     speedX:(Math.random()-0.5),
     speedY:(Math.random()-0.5)
   });
 }
 
-function animateParticles(){
+function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle="#00f7ff";
   particles.forEach(p=>{
@@ -225,30 +219,30 @@ function animateParticles(){
     ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
     ctx.fill();
   });
-  requestAnimationFrame(animateParticles);
+  requestAnimationFrame(animate);
 }
-animateParticles();
+animate();
 
-// ===== SHOW SECTION =====
+// SHOW SECTION
 function showClient(){
-  document.getElementById("client").style.display="block";
-  document.getElementById("script").style.display="none";
+  client.style.display="block";
+  script.style.display="none";
 }
-
 function showScript(){
-  document.getElementById("client").style.display="none";
-  document.getElementById("script").style.display="block";
+  client.style.display="none";
+  script.style.display="block";
 }
 
+// COPY
 function copyText(text,btn){
   navigator.clipboard.writeText(text);
   btn.innerText="Copied ✓";
-  setTimeout(()=>{btn.innerText="Copy"},1500);
+  setTimeout(()=>btn.innerText="Copy",1500);
 }
 
-// ===== RENDER CLIENT =====
+// RENDER CLIENT
 CLIENTS.forEach(c=>{
-  document.getElementById("client").innerHTML += `
+  client.innerHTML+=`
     <div class="box">
       <h3>${c.name}</h3>
       <button onclick="window.open('${c.link}')">Download</button>
@@ -256,26 +250,26 @@ CLIENTS.forEach(c=>{
   `;
 });
 
-// ===== RENDER SCRIPT =====
+// RENDER SCRIPT
 SCRIPTS.forEach(s=>{
-  document.getElementById("script").innerHTML += `
+  script.innerHTML+=`
     <div class="box">
       <h3>${s.title}</h3>
-      <button class="copy-btn" onclick="copyText(\`${s.code}\`, this)">Copy</button>
+      <button class="copy-btn" onclick="copyText(\`${s.code}\`,this)">Copy</button>
       <pre>${s.code}</pre>
     </div>
   `;
 });
 
-// ===== MUSIC =====
-const music = document.getElementById("bgMusic");
-music.src = MUSIC_LINK;
+// MUSIC
+const music=document.getElementById("bgMusic");
+music.src=MUSIC_LINK;
 
 function toggleMusic(){
   if(music.paused){
     music.play();
     document.querySelector(".music-btn").innerText="🔊 Music On";
-  } else {
+  }else{
     music.pause();
     document.querySelector(".music-btn").innerText="🔇 Music Off";
   }
